@@ -1,0 +1,501 @@
+Updating cube state display...
+cursor.html:131 Starting fromVisual conversion...
+cursor.html:132 Initial state: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}back: (3) [Array(3), Array(3), Array(3)]bottom: (3) [Array(3), Array(3), Array(3)]front: (3) [Array(3), Array(3), Array(3)]left: (3) [Array(3), Array(3), Array(3)]right: (3) [Array(3), Array(3), Array(3)]top: (3) [Array(3), Array(3), Array(3)][[Prototype]]: Object
+cursor.html:143 
+Processing cubelet at position (-1, -1, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', '0', 'ff00']
+cursor.html:153 Setting left face at [2][0] to ffa500
+cursor.html:162 Setting bottom face at [0][0] to ffff00
+cursor.html:171 Setting back face at [0][0] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, -1, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', '0', '0']
+cursor.html:153 Setting left face at [2][1] to ffa500
+cursor.html:162 Setting bottom face at [0][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (-1, -1, 1)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', 'ff', '0']
+cursor.html:153 Setting left face at [2][2] to ffa500
+cursor.html:162 Setting bottom face at [0][2] to ffff00
+cursor.html:168 Setting front face at [0][2] to ff
+cursor.html:143 
+Processing cubelet at position (-1, 0, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', '0', 'ff00']
+cursor.html:153 Setting left face at [1][0] to ffa500
+cursor.html:171 Setting back face at [0][1] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, 0, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', '0', '0']
+cursor.html:153 Setting left face at [1][1] to ffa500
+cursor.html:143 
+Processing cubelet at position (-1, 0, 1)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', 'ff', '0']
+cursor.html:153 Setting left face at [1][2] to ffa500
+cursor.html:168 Setting front face at [0][1] to ff
+cursor.html:143 
+Processing cubelet at position (-1, 1, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', '0', 'ff00']
+cursor.html:153 Setting left face at [0][0] to ffa500
+cursor.html:159 Setting top face at [0][0] to ffffff
+cursor.html:171 Setting back face at [0][2] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, 1, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', '0', '0']
+cursor.html:153 Setting left face at [0][1] to ffa500
+cursor.html:159 Setting top face at [0][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1, 1, 1)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', 'ff', '0']
+cursor.html:153 Setting left face at [0][2] to ffa500
+cursor.html:159 Setting top face at [0][2] to ffffff
+cursor.html:168 Setting front face at [0][0] to ff
+cursor.html:143 
+Processing cubelet at position (0, -1, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', '0', 'ff00']
+cursor.html:162 Setting bottom face at [1][0] to ffff00
+cursor.html:171 Setting back face at [1][0] to ff00
+cursor.html:143 
+Processing cubelet at position (0, -1, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', '0', '0']
+cursor.html:162 Setting bottom face at [1][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (0, -1, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', 'ff', '0']
+cursor.html:162 Setting bottom face at [1][2] to ffff00
+cursor.html:168 Setting front face at [1][2] to ff
+cursor.html:143 
+Processing cubelet at position (0, 0, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', '0', 'ff00']
+cursor.html:171 Setting back face at [1][1] to ff00
+cursor.html:143 
+Processing cubelet at position (0, 0, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', '0', '0']
+cursor.html:143 
+Processing cubelet at position (0, 0, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', '0']
+cursor.html:168 Setting front face at [1][1] to ff
+cursor.html:143 
+Processing cubelet at position (0, 1, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', '0', 'ff00']
+cursor.html:159 Setting top face at [1][0] to ffffff
+cursor.html:171 Setting back face at [1][2] to ff00
+cursor.html:143 
+Processing cubelet at position (0, 1, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', '0', '0']
+cursor.html:159 Setting top face at [1][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (0, 1, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', 'ff', '0']
+cursor.html:159 Setting top face at [1][2] to ffffff
+cursor.html:168 Setting front face at [1][0] to ff
+cursor.html:143 
+Processing cubelet at position (1, -1, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', '0', 'ff00']
+cursor.html:150 Setting right face at [2][2] to ff0000
+cursor.html:162 Setting bottom face at [2][0] to ffff00
+cursor.html:171 Setting back face at [2][0] to ff00
+cursor.html:143 
+Processing cubelet at position (1, -1, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', '0', '0']
+cursor.html:150 Setting right face at [2][1] to ff0000
+cursor.html:162 Setting bottom face at [2][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1, -1, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', 'ff', '0']
+cursor.html:150 Setting right face at [2][0] to ff0000
+cursor.html:162 Setting bottom face at [2][2] to ffff00
+cursor.html:168 Setting front face at [2][2] to ff
+cursor.html:143 
+Processing cubelet at position (1, 0, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', '0', 'ff00']
+cursor.html:150 Setting right face at [1][2] to ff0000
+cursor.html:171 Setting back face at [2][1] to ff00
+cursor.html:143 
+Processing cubelet at position (1, 0, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', '0', '0']
+cursor.html:150 Setting right face at [1][1] to ff0000
+cursor.html:143 
+Processing cubelet at position (1, 0, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', 'ff', '0']
+cursor.html:150 Setting right face at [1][0] to ff0000
+cursor.html:168 Setting front face at [2][1] to ff
+cursor.html:143 
+Processing cubelet at position (1, 1, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', '0', 'ff00']
+cursor.html:150 Setting right face at [0][2] to ff0000
+cursor.html:159 Setting top face at [2][0] to ffffff
+cursor.html:171 Setting back face at [2][2] to ff00
+cursor.html:143 
+Processing cubelet at position (1, 1, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', '0', '0']
+cursor.html:150 Setting right face at [0][1] to ff0000
+cursor.html:159 Setting top face at [2][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (1, 1, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', 'ff', '0']
+cursor.html:150 Setting right face at [0][0] to ff0000
+cursor.html:159 Setting top face at [2][2] to ffffff
+cursor.html:168 Setting front face at [2][0] to ff
+cursor.html:177 
+Final state after conversion: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:580 Current cube state: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:584 Formatting top face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting right face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting front face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting back face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting bottom face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting left face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:620 Cube state display updated successfully
+cursor.html:576 Updating cube state display...
+cursor.html:131 Starting fromVisual conversion...
+cursor.html:132 Initial state: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:143 
+Processing cubelet at position (-1, -1, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', '0', 'ff00']
+cursor.html:153 Setting left face at [2][0] to ffa500
+cursor.html:162 Setting bottom face at [0][0] to ffff00
+cursor.html:171 Setting back face at [0][0] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, -1, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', '0', '0']
+cursor.html:153 Setting left face at [2][1] to ffa500
+cursor.html:162 Setting bottom face at [0][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1.000000000000001, -1.0000000000000013, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [2][2] to ff
+cursor.html:143 
+Processing cubelet at position (-1, 0, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', '0', 'ff00']
+cursor.html:153 Setting left face at [1][0] to ffa500
+cursor.html:171 Setting back face at [0][1] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, 0, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', '0', '0']
+cursor.html:153 Setting left face at [1][1] to ffa500
+cursor.html:143 
+Processing cubelet at position (-2.7755575615628914e-16, -1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [1][2] to ff
+cursor.html:143 
+Processing cubelet at position (-1, 1, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', '0', 'ff00']
+cursor.html:153 Setting left face at [0][0] to ffa500
+cursor.html:159 Setting top face at [0][0] to ffffff
+cursor.html:171 Setting back face at [0][2] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, 1, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', '0', '0']
+cursor.html:153 Setting left face at [0][1] to ffa500
+cursor.html:159 Setting top face at [0][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1.0000000000000013, -1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: -0, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [0][2] to ff
+cursor.html:143 
+Processing cubelet at position (0, -1, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', '0', 'ff00']
+cursor.html:162 Setting bottom face at [1][0] to ffff00
+cursor.html:171 Setting back face at [1][0] to ff00
+cursor.html:143 
+Processing cubelet at position (0, -1, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', '0', '0']
+cursor.html:162 Setting bottom face at [1][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1.000000000000001, -2.7755575615628914e-16, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [2][1] to ff
+cursor.html:143 
+Processing cubelet at position (0, 0, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', '0', 'ff00']
+cursor.html:171 Setting back face at [1][1] to ff00
+cursor.html:143 
+Processing cubelet at position (0, 0, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', '0', '0']
+cursor.html:143 
+Processing cubelet at position (0, 0, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [1][1] to ff
+cursor.html:143 
+Processing cubelet at position (0, 1, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', '0', 'ff00']
+cursor.html:159 Setting top face at [1][0] to ffffff
+cursor.html:171 Setting back face at [1][2] to ff00
+cursor.html:143 
+Processing cubelet at position (0, 1, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', '0', '0']
+cursor.html:159 Setting top face at [1][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1.000000000000001, 2.7755575615628914e-16, 1)
+cursor.html:144 Converted to indices: {x: -0, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [0][1] to ff
+cursor.html:143 
+Processing cubelet at position (1, -1, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', '0', 'ff00']
+cursor.html:150 Setting right face at [2][2] to ff0000
+cursor.html:162 Setting bottom face at [2][0] to ffff00
+cursor.html:171 Setting back face at [2][0] to ff00
+cursor.html:143 
+Processing cubelet at position (1, -1, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', '0', '0']
+cursor.html:150 Setting right face at [2][1] to ff0000
+cursor.html:162 Setting bottom face at [2][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1.0000000000000013, 1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [2][0] to ff
+cursor.html:143 
+Processing cubelet at position (1, 0, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', '0', 'ff00']
+cursor.html:150 Setting right face at [1][2] to ff0000
+cursor.html:171 Setting back face at [2][1] to ff00
+cursor.html:143 
+Processing cubelet at position (1, 0, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', '0', '0']
+cursor.html:150 Setting right face at [1][1] to ff0000
+cursor.html:143 
+Processing cubelet at position (2.7755575615628914e-16, 1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [1][0] to ff
+cursor.html:143 
+Processing cubelet at position (1, 1, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', '0', 'ff00']
+cursor.html:150 Setting right face at [0][2] to ff0000
+cursor.html:159 Setting top face at [2][0] to ffffff
+cursor.html:171 Setting back face at [2][2] to ff00
+cursor.html:143 
+Processing cubelet at position (1, 1, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', '0', '0']
+cursor.html:150 Setting right face at [0][1] to ff0000
+cursor.html:159 Setting top face at [2][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1.000000000000001, 1.0000000000000013, 1)
+cursor.html:144 Converted to indices: {x: -0, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [0][0] to ff
+cursor.html:177 
+Final state after conversion: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:580 Current cube state: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:584 Formatting top face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting right face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting front face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting back face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting bottom face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting left face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:620 Cube state display updated successfully
+cursor.html:576 Updating cube state display...
+cursor.html:131 Starting fromVisual conversion...
+cursor.html:132 Initial state: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:143 
+Processing cubelet at position (-1, -1, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', '0', 'ff00']
+cursor.html:153 Setting left face at [2][0] to ffa500
+cursor.html:162 Setting bottom face at [0][0] to ffff00
+cursor.html:171 Setting back face at [0][0] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, -1, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', 'ffff00', '0', '0']
+cursor.html:153 Setting left face at [2][1] to ffa500
+cursor.html:162 Setting bottom face at [0][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1.000000000000001, -1.0000000000000013, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [2][2] to ff
+cursor.html:143 
+Processing cubelet at position (-1, 0, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', '0', 'ff00']
+cursor.html:153 Setting left face at [1][0] to ffa500
+cursor.html:171 Setting back face at [0][1] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, 0, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', '0', '0', '0', '0']
+cursor.html:153 Setting left face at [1][1] to ffa500
+cursor.html:143 
+Processing cubelet at position (-2.7755575615628914e-16, -1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [1][2] to ff
+cursor.html:143 
+Processing cubelet at position (-1, 1, -1)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', '0', 'ff00']
+cursor.html:153 Setting left face at [0][0] to ffa500
+cursor.html:159 Setting top face at [0][0] to ffffff
+cursor.html:171 Setting back face at [0][2] to ff00
+cursor.html:143 
+Processing cubelet at position (-1, 1, 0)
+cursor.html:144 Converted to indices: {x: 0, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['0', 'ffa500', 'ffffff', '0', '0', '0']
+cursor.html:153 Setting left face at [0][1] to ffa500
+cursor.html:159 Setting top face at [0][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1.0000000000000013, -1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: -0, y: 2, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [0][2] to ff
+cursor.html:143 
+Processing cubelet at position (0, -1, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', '0', 'ff00']
+cursor.html:162 Setting bottom face at [1][0] to ffff00
+cursor.html:171 Setting back face at [1][0] to ff00
+cursor.html:143 
+Processing cubelet at position (0, -1, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', '0', 'ffff00', '0', '0']
+cursor.html:162 Setting bottom face at [1][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1.000000000000001, -2.7755575615628914e-16, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [2][1] to ff
+cursor.html:143 
+Processing cubelet at position (0, 0, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', '0', 'ff00']
+cursor.html:171 Setting back face at [1][1] to ff00
+cursor.html:143 
+Processing cubelet at position (0, 0, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', '0', '0']
+cursor.html:143 
+Processing cubelet at position (0, 0, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [1][1] to ff
+cursor.html:143 
+Processing cubelet at position (0, 1, -1)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', '0', 'ff00']
+cursor.html:159 Setting top face at [1][0] to ffffff
+cursor.html:171 Setting back face at [1][2] to ff00
+cursor.html:143 
+Processing cubelet at position (0, 1, 0)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['0', '0', 'ffffff', '0', '0', '0']
+cursor.html:159 Setting top face at [1][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1.000000000000001, 2.7755575615628914e-16, 1)
+cursor.html:144 Converted to indices: {x: -0, y: 1, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [0][1] to ff
+cursor.html:143 
+Processing cubelet at position (1, -1, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', '0', 'ff00']
+cursor.html:150 Setting right face at [2][2] to ff0000
+cursor.html:162 Setting bottom face at [2][0] to ffff00
+cursor.html:171 Setting back face at [2][0] to ff00
+cursor.html:143 
+Processing cubelet at position (1, -1, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 2, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', 'ffff00', '0', '0']
+cursor.html:150 Setting right face at [2][1] to ff0000
+cursor.html:162 Setting bottom face at [2][1] to ffff00
+cursor.html:143 
+Processing cubelet at position (1.0000000000000013, 1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [2][0] to ff
+cursor.html:143 
+Processing cubelet at position (1, 0, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', '0', 'ff00']
+cursor.html:150 Setting right face at [1][2] to ff0000
+cursor.html:171 Setting back face at [2][1] to ff00
+cursor.html:143 
+Processing cubelet at position (1, 0, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 1, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', '0', '0', '0', '0']
+cursor.html:150 Setting right face at [1][1] to ff0000
+cursor.html:143 
+Processing cubelet at position (2.7755575615628914e-16, 1.000000000000001, 1)
+cursor.html:144 Converted to indices: {x: 1, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [1][0] to ff
+cursor.html:143 
+Processing cubelet at position (1, 1, -1)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 0}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', '0', 'ff00']
+cursor.html:150 Setting right face at [0][2] to ff0000
+cursor.html:159 Setting top face at [2][0] to ffffff
+cursor.html:171 Setting back face at [2][2] to ff00
+cursor.html:143 
+Processing cubelet at position (1, 1, 0)
+cursor.html:144 Converted to indices: {x: 2, y: 0, z: 1}
+cursor.html:145 Material colors: (6) ['ff0000', '0', 'ffffff', '0', '0', '0']
+cursor.html:150 Setting right face at [0][1] to ff0000
+cursor.html:159 Setting top face at [2][1] to ffffff
+cursor.html:143 
+Processing cubelet at position (-1.000000000000001, 1.0000000000000013, 1)
+cursor.html:144 Converted to indices: {x: -0, y: 0, z: 2}
+cursor.html:145 Material colors: (6) ['0', '0', '0', '0', 'ff', 'ff']
+cursor.html:168 Setting front face at [0][0] to ff
+cursor.html:177 
+Final state after conversion: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:580 Current cube state: {front: Array(3), back: Array(3), top: Array(3), bottom: Array(3), left: Array(3), …}
+cursor.html:584 Formatting top face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting right face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting front face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting back face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting bottom face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:584 Formatting left face: (3) [Array(3), Array(3), Array(3)]
+cursor.html:620 Cube state display updated successfully

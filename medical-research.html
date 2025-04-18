@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Research - Bluetooth Rubik's Cube</title>
+    <link rel="stylesheet" href="src/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+        }
+        nav {
+            background: #222;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: rgba(255, 69, 0, 0.8);
+            transition: background 0.3s, transform 0.2s;
+        }
+        nav ul li a:hover {
+            background: rgba(255, 99, 71, 0.9);
+            transform: scale(1.05);
+        }
+        #hero {
+            padding: 50px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #hero::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.6), transparent);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: -1;
+        }
+        .research-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .research-section {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
+        }
+        .research-section h2 {
+            color: #ff4500;
+            margin-bottom: 20px;
+        }
+        .research-section p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .research-section ul {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .research-section li {
+            margin-bottom: 10px;
+        }
+        .research-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./medical-research.html">Medical Research</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <h1>Medical Research</h1>
+            <p>Exploring the therapeutic benefits of Rubik's Cube solving</p>
+        </section>
+        
+        <div class="research-content">
+            <div class="research-section">
+                <h2>Cognitive Benefits</h2>
+                <p>Solving a Rubik's Cube engages multiple cognitive processes simultaneously, making it an excellent tool for cognitive training and rehabilitation. Research has shown that regular practice with puzzle-solving activities like the Rubik's Cube can lead to improvements in:</p>
+                <ul>
+                    <li>Spatial reasoning abilities</li>
+                    <li>Working memory capacity</li>
+                    <li>Problem-solving skills</li>
+                    <li>Pattern recognition</li>
+                    <li>Executive function</li>
+                </ul>
+                <p>These cognitive enhancements can be particularly beneficial for individuals recovering from brain injuries or those experiencing age-related cognitive decline.</p>
+            </div>
+            
+            <div class="research-section">
+                <h2>Therapeutic Applications</h2>
+                <p>The structured, repetitive nature of Rubik's Cube solving has been found to have therapeutic applications in various clinical settings:</p>
+                <ul>
+                    <li>Occupational therapy for fine motor skill development</li>
+                    <li>Physical therapy for hand-eye coordination</li>
+                    <li>Rehabilitation programs for stroke patients</li>
+                    <li>Stress reduction and anxiety management</li>
+                    <li>ADHD management through focused activity</li>
+                </ul>
+                <p>Our Bluetooth-enabled Rubik's Cube adds an interactive element to these therapeutic applications, allowing healthcare providers to track progress and customize difficulty levels.</p>
+            </div>
+            
+            <div class="research-section">
+                <h2>Neurological Impact</h2>
+                <p>Recent neuroimaging studies have demonstrated that solving a Rubik's Cube activates multiple brain regions, including:</p>
+                <ul>
+                    <li>Prefrontal cortex (executive function and planning)</li>
+                    <li>Parietal lobe (spatial processing)</li>
+                    <li>Occipital lobe (visual processing)</li>
+                    <li>Cerebellum (motor coordination)</li>
+                </ul>
+                <p>This widespread neural activation suggests that Rubik's Cube solving may promote neuroplasticity and cognitive reserve, potentially offering protective benefits against neurodegenerative conditions.</p>
+            </div>
+            
+            <div class="research-section">
+                <h2>Future Research Directions</h2>
+                <p>Our team is currently collaborating with leading research institutions to explore:</p>
+                <ul>
+                    <li>Long-term cognitive effects of regular Rubik's Cube practice</li>
+                    <li>Integration of smart cube technology in rehabilitation protocols</li>
+                    <li>Development of personalized difficulty algorithms based on patient capabilities</li>
+                    <li>Quantitative assessment of fine motor skills through cube-solving metrics</li>
+                </ul>
+                <p>We believe that the combination of traditional puzzle-solving benefits with modern technology will open new avenues for therapeutic applications and cognitive enhancement.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html> 

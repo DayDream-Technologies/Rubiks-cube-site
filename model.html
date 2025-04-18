@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Rubik's Cube</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            font-family: Arial, sans-serif;
+        }
+        #home-button {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 100;
+            transition: background-color 0.3s;
+        }
+        #home-button:hover {
+            background-color: #ff6347;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        #cubeState {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-family: monospace;
+            width: 200px;
+            height: 300px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .face-display {
+            white-space: pre;
+            text-align: center;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <button id="home-button" onclick="window.location.href='index.html'">Home</button>
+    <div id="info">
+        Controls:<br>
+        Mouse: Rotate view<br>
+        Scroll: Zoom<br>
+        Keys: Rotate faces (W, Y, R, O, B, G)
+    </div>
+    <div id="cubeState">
+        <div class="face-display" id="top-face"></div>
+        <div class="face-display" id="right-face"></div>
+        <div class="face-display" id="front-face"></div>
+        <div class="face-display" id="back-face"></div>
+        <div class="face-display" id="bottom-face"></div>
+        <div class="face-display" id="left-face"></div>
+    </div>
+    <div id="controls">
+        <button onclick="resetCube()">Reset</button>
+        <button onclick="scrambleCube()">Scramble</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        let scene, camera, renderer, controls;
+        let cubelets = [];
+        let isAnimating = false;
+        let currentRotation = 0;
+        let targetRotation = 0;
+        let rotatingFace = null;
+        let rotatingCubes = [];
+        let rotatingAxis = new THREE.Vector3();
+        let rotatingPivot = new THREE.Vector3();
+        const CUBELET_SIZE = 0.95;
+        const ROTATION_SPEED = 0.1;
+        const colors = {
+            white: 0xffffff,
+            yellow: 0xffff00,
+            red: 0xff0000,
+            orange: 0xffa500,
+            blue: 0x0000ff,
+            green: 0x00ff00
+        };
+        let scrambleQueue = [];
+        let isScrambling = false;
+        let moveHistory = []; // Store all moves in order
+
+        // Cube state data structure
+        class CubeState {
+            constructor() {
+                // Initialize with solved state
+                this.state = {
+                    front: Array(3).fill().map(() => Array(3).fill(colors.blue)),
+                    back: Array(3).fill().map(() => Array(3).fill(colors.green)),
+                    top: Array(3).fill().map(() => Array(3).fill(colors.white)),
+                    bottom: Array(3).fill().map(() => Array(3).fill(colors.yellow)),
+                    left: Array(3).fill().map(() => Array(3).fill(colors.orange)),
+                    right: Array(3).fill().map(() => Array(3).fill(colors.red))
+                };
+            }
+
+            // Convert visual cube state to data structure
+            static fromVisual(cubelets) {
+                const state = new CubeState();
+                
+                cubelets.forEach(cubelet => {
+                    const pos = cubelet.position;
+                    const materials = cubelet.material;
+
+                    // Convert position to array indices (0-2)
+                    // For x: -1 -> 0, 0 -> 1, 1 -> 2
+                    // For y: -1 -> 2, 0 -> 1, 1 -> 0 (invert y for top-to-bottom)
+                    // For z: -1 -> 0, 0 -> 1, 1 -> 2
+                    const x = Math.round(pos.x + 1);
+                    const y = 2 - Math.round(pos.y + 1); // Invert y coordinate
+                    const z = Math.round(pos.z + 1);
+
+                    // Update each face in the state based on position and materials
+                    if (Math.abs(pos.x) === 1) {
+                        if (pos.x > 0) {
+                            // Right face - map from right to left, top to bottom
+                            state.state.right[y][2 - z] = materials[0].color.getHex();
+                        } else {
+                            // Left face - map from left to right, top to bottom
+                            state.state.left[y][z] = materials[1].color.getHex();
+                        }
+                    }
+                    if (Math.abs(pos.y) === 1) {
+                        if (pos.y > 0) {
+                            // Top face - map from left to right, front to back
+                            state.state.top[x][z] = materials[2].color.getHex();
+                        } else {
+                            // Bottom face - map from left to right, front to back
+                            state.state.bottom[x][z] = materials[3].color.getHex();
+                        }
+                    }
+                    if (Math.abs(pos.z) === 1) {
+                        if (pos.z > 0) {
+                            // Front face - map from left to right, top to bottom
+                            state.state.front[x][y] = materials[4].color.getHex();
+                        } else {
+                            // Back face - map from right to left, top to bottom
+                            state.state.back[x][2 - y] = materials[5].color.getHex();
+                        }
+                    }
+                });
+
+                console.log('State after fromVisual:', state.state);
+                return state;
+            }
+
+            // Convert data structure to visual cube state
+            toVisual(cubelets) {
+                cubelets.forEach(cubelet => {
+                    const pos = {
+                        x: Math.round(cubelet.position.x + 1),
+                        y: Math.round(cubelet.position.y + 1),
+                        z: Math.round(cubelet.position.z + 1)
+                    };
+
+                    const materials = cubelet.material;
+                    
+                    // Reset all materials to black first
+                    materials.forEach(material => {
+                        material.color.setHex(0x000000);
+                    });
+
+                    // Set colors based on position and state
+                    if (pos.x === 2) materials[0].color.setHex(this.state.right[pos.y][pos.z]);
+                    if (pos.x === 0) materials[1].color.setHex(this.state.left[pos.y][pos.z]);
+                    if (pos.y === 2) materials[2].color.setHex(this.state.top[pos.x][pos.z]);
+                    if (pos.y === 0) materials[3].color.setHex(this.state.bottom[pos.x][pos.z]);
+                    if (pos.z === 2) materials[4].color.setHex(this.state.front[pos.x][pos.y]);
+                    if (pos.z === 0) materials[5].color.setHex(this.state.back[pos.x][pos.y]);
+                });
+            }
+
+            // Rotate a face in the data structure
+            rotateFace(face, clockwise = true) {
+                const faceData = this.state[face];
+                const temp = Array(3).fill().map(() => Array(3).fill(0));
+
+                // Rotate the face itself
+                if (clockwise) {
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            temp[j][2 - i] = faceData[i][j];
+                        }
+                    }
+                } else {
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            temp[2 - j][i] = faceData[i][j];
+                        }
+                    }
+                }
+
+                this.state[face] = temp;
+
+                // Update adjacent faces
+                this.updateAdjacentFaces(face, clockwise);
+            }
+
+            // Update adjacent faces after rotation
+            updateAdjacentFaces(face, clockwise = true) {
+                const temp = Array(3).fill(0);
+                
+                switch (face) {
+                    case 'front':
+                        // Store top row
+                        for (let i = 0; i < 3; i++) {
+                            temp[i] = this.state.top[2][i];
+                        }
+                        if (clockwise) {
+                            // Move left to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[2][i] = this.state.left[2 - i][2];
+                            }
+                            // Move bottom to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[i][2] = this.state.bottom[0][i];
+                            }
+                            // Move right to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[0][i] = this.state.right[2 - i][0];
+                            }
+                            // Move stored top to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[i][0] = temp[i];
+                            }
+                        } else {
+                            // Move right to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[2][i] = this.state.right[i][0];
+                            }
+                            // Move bottom to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[2 - i][0] = this.state.bottom[0][i];
+                            }
+                            // Move left to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[0][i] = this.state.left[i][2];
+                            }
+                            // Move stored top to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[2 - i][2] = temp[i];
+                            }
+                        }
+                        break;
+
+                    case 'back':
+                        // Store top row
+                        for (let i = 0; i < 3; i++) {
+                            temp[i] = this.state.top[0][i];
+                        }
+                        if (clockwise) {
+                            // Move right to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[0][i] = this.state.right[2 - i][2];
+                            }
+                            // Move bottom to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[i][2] = this.state.bottom[2][i];
+                            }
+                            // Move left to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[2][i] = this.state.left[2 - i][0];
+                            }
+                            // Move stored top to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[i][0] = temp[i];
+                            }
+                        } else {
+                            // Move left to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[0][i] = this.state.left[i][0];
+                            }
+                            // Move bottom to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[2 - i][0] = this.state.bottom[2][i];
+                            }
+                            // Move right to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[2][i] = this.state.right[i][2];
+                            }
+                            // Move stored top to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[2 - i][2] = temp[i];
+                            }
+                        }
+                        break;
+
+                    case 'top':
+                        // Store front row
+                        for (let i = 0; i < 3; i++) {
+                            temp[i] = this.state.front[0][i];
+                        }
+                        if (clockwise) {
+                            // Move right to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[0][i] = this.state.right[0][i];
+                            }
+                            // Move back to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[0][i] = this.state.back[0][i];
+                            }
+                            // Move left to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[0][i] = this.state.left[0][i];
+                            }
+                            // Move stored front to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[0][i] = temp[i];
+                            }
+                        } else {
+                            // Move left to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[0][i] = this.state.left[0][i];
+                            }
+                            // Move back to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[0][i] = this.state.back[0][i];
+                            }
+                            // Move right to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[0][i] = this.state.right[0][i];
+                            }
+                            // Move stored front to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[0][i] = temp[i];
+                            }
+                        }
+                        break;
+
+                    case 'bottom':
+                        // Store front row
+                        for (let i = 0; i < 3; i++) {
+                            temp[i] = this.state.front[2][i];
+                        }
+                        if (clockwise) {
+                            // Move left to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[2][i] = this.state.left[2][i];
+                            }
+                            // Move back to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[2][i] = this.state.back[2][i];
+                            }
+                            // Move right to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[2][i] = this.state.right[2][i];
+                            }
+                            // Move stored front to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[2][i] = temp[i];
+                            }
+                        } else {
+                            // Move right to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[2][i] = this.state.right[2][i];
+                            }
+                            // Move back to right
+                            for (let i = 0; i < 3; i++) {
+                                this.state.right[2][i] = this.state.back[2][i];
+                            }
+                            // Move left to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[2][i] = this.state.left[2][i];
+                            }
+                            // Move stored front to left
+                            for (let i = 0; i < 3; i++) {
+                                this.state.left[2][i] = temp[i];
+                            }
+                        }
+                        break;
+
+                    case 'right':
+                        // Store front column
+                        for (let i = 0; i < 3; i++) {
+                            temp[i] = this.state.front[i][2];
+                        }
+                        if (clockwise) {
+                            // Move top to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[i][2] = this.state.top[2 - i][2];
+                            }
+                            // Move back to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[i][2] = this.state.back[2 - i][0];
+                            }
+                            // Move bottom to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[i][0] = this.state.bottom[i][2];
+                            }
+                            // Move stored front to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[i][2] = temp[i];
+                            }
+                        } else {
+                            // Move bottom to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[i][2] = this.state.bottom[i][2];
+                            }
+                            // Move back to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[i][2] = this.state.back[2 - i][0];
+                            }
+                            // Move top to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[i][0] = this.state.top[2 - i][2];
+                            }
+                            // Move stored front to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[i][2] = temp[i];
+                            }
+                        }
+                        break;
+
+                    case 'left':
+                        // Store front column
+                        for (let i = 0; i < 3; i++) {
+                            temp[i] = this.state.front[i][0];
+                        }
+                        if (clockwise) {
+                            // Move bottom to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[i][0] = this.state.bottom[i][0];
+                            }
+                            // Move back to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[i][0] = this.state.back[2 - i][2];
+                            }
+                            // Move top to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[i][2] = this.state.top[2 - i][0];
+                            }
+                            // Move stored front to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[i][0] = temp[i];
+                            }
+                        } else {
+                            // Move top to front
+                            for (let i = 0; i < 3; i++) {
+                                this.state.front[i][0] = this.state.top[i][0];
+                            }
+                            // Move back to top
+                            for (let i = 0; i < 3; i++) {
+                                this.state.top[2 - i][0] = this.state.back[i][2];
+                            }
+                            // Move bottom to back
+                            for (let i = 0; i < 3; i++) {
+                                this.state.back[2 - i][2] = this.state.bottom[i][0];
+                            }
+                            // Move stored front to bottom
+                            for (let i = 0; i < 3; i++) {
+                                this.state.bottom[i][0] = temp[i];
+                            }
+                        }
+                        break;
+                }
+            }
+
+            // Get string representation of the cube state
+            toString() {
+                return JSON.stringify(this.state, null, 2);
+            }
+        }
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            camera.position.z = 5;
+
+            // Improved lighting setup
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight1.position.set(5, 5, 5);
+            scene.add(directionalLight1);
+
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight2.position.set(-5, -5, -5);
+            scene.add(directionalLight2);
+
+            createCube();
+            updateCubeStateDisplay();
+            animate();
+        }
+
+        function createCubeletMaterials(x, y, z) {
+            const materials = [];
+            for (let i = 0; i < 6; i++) {
+                let color = 0x000000; // Default to black for all faces
+                
+                // Only set colors for faces that are on the outside of the cube
+                switch (i) {
+                    case 0: // right
+                        if (x === 1) color = colors.red;
+                        break;
+                    case 1: // left
+                        if (x === -1) color = colors.orange;
+                        break;
+                    case 2: // top
+                        if (y === 1) color = colors.white;
+                        break;
+                    case 3: // bottom
+                        if (y === -1) color = colors.yellow;
+                        break;
+                    case 4: // front
+                        if (z === 1) color = colors.blue;
+                        break;
+                    case 5: // back
+                        if (z === -1) color = colors.green;
+                        break;
+                }
+                
+                materials.push(new THREE.MeshPhongMaterial({ 
+                    color,
+                    shininess: 0
+                }));
+            }
+            return materials;
+        }
+
+        function createCube() {
+            const geometry = new THREE.BoxGeometry(CUBELET_SIZE, CUBELET_SIZE, CUBELET_SIZE);
+
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    for (let z = -1; z <= 1; z++) {
+                        const materials = createCubeletMaterials(x, y, z);
+                        const cubelet = new THREE.Mesh(geometry, materials);
+                        cubelet.position.set(x, y, z);
+                        cubelet.userData.originalPosition = { x, y, z };
+                        scene.add(cubelet);
+                        cubelets.push(cubelet);
+                    }
+                }
+            }
+        }
+
+        function startRotation(face, angle, isUndo = false) {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            currentRotation = 0;
+            targetRotation = angle;
+            rotatingFace = face;
+            rotatingCubes = [];
+
+            // Get all cubelets that should rotate (including edge pieces)
+            switch (face) {
+                case 'white':
+                    rotatingAxis.set(0, 1, 0);
+                    rotatingCubes = cubelets.filter(c => {
+                        const pos = c.position;
+                        return Math.abs(pos.y - 1) < 0.1;
+                    });
+                    rotatingPivot.set(0, 1, 0);
+                    break;
+                case 'yellow':
+                    rotatingAxis.set(0, -1, 0);
+                    rotatingCubes = cubelets.filter(c => {
+                        const pos = c.position;
+                        return Math.abs(pos.y + 1) < 0.1;
+                    });
+                    rotatingPivot.set(0, -1, 0);
+                    break;
+                case 'red':
+                    rotatingAxis.set(1, 0, 0);
+                    rotatingCubes = cubelets.filter(c => {
+                        const pos = c.position;
+                        return Math.abs(pos.x - 1) < 0.1;
+                    });
+                    rotatingPivot.set(1, 0, 0);
+                    break;
+                case 'orange':
+                    rotatingAxis.set(-1, 0, 0);
+                    rotatingCubes = cubelets.filter(c => {
+                        const pos = c.position;
+                        return Math.abs(pos.x + 1) < 0.1;
+                    });
+                    rotatingPivot.set(-1, 0, 0);
+                    break;
+                case 'blue':
+                    rotatingAxis.set(0, 0, 1);
+                    rotatingCubes = cubelets.filter(c => {
+                        const pos = c.position;
+                        return Math.abs(pos.z - 1) < 0.1;
+                    });
+                    rotatingPivot.set(0, 0, 1);
+                    break;
+                case 'green':
+                    rotatingAxis.set(0, 0, -1);
+                    rotatingCubes = cubelets.filter(c => {
+                        const pos = c.position;
+                        return Math.abs(pos.z + 1) < 0.1;
+                    });
+                    rotatingPivot.set(0, 0, -1);
+                    break;
+            }
+
+            // Store the move in history if it's not an undo operation
+            if (!isUndo && !isScrambling) {
+                moveHistory.push({ face, angle });
+            }
+        }
+
+        function updateRotation() {
+            if (!isAnimating) return;
+
+            const step = Math.min(ROTATION_SPEED, targetRotation - currentRotation);
+            currentRotation += step;
+
+            rotatingCubes.forEach(cubelet => {
+                // Create a temporary vector for the position
+                const pos = cubelet.position.clone();
+                
+                // Move to origin relative to pivot
+                pos.sub(rotatingPivot);
+                
+                // Apply rotation
+                pos.applyAxisAngle(rotatingAxis, step);
+                
+                // Move back from origin
+                pos.add(rotatingPivot);
+                
+                // Update position
+                cubelet.position.copy(pos);
+            });
+
+            if (currentRotation >= targetRotation) {
+                isAnimating = false;
+                updateMaterials();
+                updateCubeStateDisplay(); // Update display after rotation completes
+                
+                // If we're scrambling, start the next move
+                if (isScrambling && scrambleQueue.length > 0) {
+                    const move = scrambleQueue.shift();
+                    startRotation(move.face, move.angle);
+                } else if (isScrambling) {
+                    isScrambling = false;
+                }
+            }
+        }
+
+        function updateMaterials() {
+            // Store original positions and materials
+            const tempData = rotatingCubes.map(cubelet => ({
+                position: cubelet.position.clone(),
+                materials: cubelet.material.map(m => m.clone())
+            }));
+
+            // Update positions and materials
+            rotatingCubes.forEach((cubelet, index) => {
+                const materials = cubelet.material;
+                const tempMaterials = tempData[index].materials;
+                const pos = cubelet.position;
+
+                // Update materials based on the face being rotated
+                switch (rotatingFace) {
+                    case 'white':
+                        // Rotate materials clockwise
+                        materials[0] = tempMaterials[4]; // right
+                        materials[1] = tempMaterials[5]; // left
+                        materials[2] = tempMaterials[2]; // top
+                        materials[3] = tempMaterials[3]; // bottom
+                        materials[4] = tempMaterials[1]; // front
+                        materials[5] = tempMaterials[0]; // back
+                        break;
+                    case 'yellow':
+                        // Rotate materials counter-clockwise
+                        materials[0] = tempMaterials[5]; // right
+                        materials[1] = tempMaterials[4]; // left
+                        materials[2] = tempMaterials[2]; // top
+                        materials[3] = tempMaterials[3]; // bottom
+                        materials[4] = tempMaterials[0]; // front
+                        materials[5] = tempMaterials[1]; // back
+                        break;
+                    case 'red':
+                        // Rotate materials clockwise
+                        materials[0] = tempMaterials[0]; // right
+                        materials[1] = tempMaterials[1]; // left
+                        materials[2] = tempMaterials[5]; // top
+                        materials[3] = tempMaterials[4]; // bottom
+                        materials[4] = tempMaterials[2]; // front
+                        materials[5] = tempMaterials[3]; // back
+                        break;
+                    case 'orange':
+                        // Rotate materials counter-clockwise
+                        materials[0] = tempMaterials[0]; // right
+                        materials[1] = tempMaterials[1]; // left
+                        materials[2] = tempMaterials[4]; // top
+                        materials[3] = tempMaterials[5]; // bottom
+                        materials[4] = tempMaterials[3]; // front
+                        materials[5] = tempMaterials[2]; // back
+                        break;
+                    case 'blue':
+                        // Rotate materials clockwise
+                        materials[0] = tempMaterials[3]; // right
+                        materials[1] = tempMaterials[2]; // left
+                        materials[2] = tempMaterials[0]; // top
+                        materials[3] = tempMaterials[1]; // bottom
+                        materials[4] = tempMaterials[4]; // front
+                        materials[5] = tempMaterials[5]; // back
+                        break;
+                    case 'green':
+                        // Rotate materials counter-clockwise
+                        materials[0] = tempMaterials[2]; // right
+                        materials[1] = tempMaterials[3]; // left
+                        materials[2] = tempMaterials[1]; // top
+                        materials[3] = tempMaterials[0]; // bottom
+                        materials[4] = tempMaterials[4]; // front
+                        materials[5] = tempMaterials[5]; // back
+                        break;
+                }
+
+                // Update colors based on final position
+//                if (Math.abs(pos.x) === 1) {
+//                    materials[0].color.setHex(pos.x > 0 ? colors.red : colors.orange);
+//                    materials[1].color.setHex(pos.x < 0 ? colors.orange : colors.red);
+//                }
+//                if (Math.abs(pos.y) === 1) {
+//                    materials[2].color.setHex(pos.y > 0 ? colors.white : colors.yellow);
+//                    materials[3].color.setHex(pos.y < 0 ? colors.yellow : colors.white);
+//                }
+//                if (Math.abs(pos.z) === 1) {
+//                    materials[4].color.setHex(pos.z > 0 ? colors.blue : colors.green);
+//                    materials[5].color.setHex(pos.z < 0 ? colors.green : colors.blue);
+//                }
+            });
+
+            // Update the cube state display
+            updateCubeStateDisplay();
+        }
+
+        function updateCubeStateDisplay() {
+            console.log('Updating cube state display...');
+            
+            // Create a new cube state from the current visual state
+            const cubeState = CubeState.fromVisual(cubelets);
+            console.log('Current cube state:', cubeState.state);
+            
+            // Helper function to format a face
+            const formatFace = (face, colors) => {
+                console.log(`Formatting ${face} face:`, colors);
+                return `${face.toUpperCase()}:\n${colors.map(row => 
+                    row.map(color => {
+                        // Convert color to hex string for comparison
+                        const colorHex = color.toString(16);
+                        switch(colorHex) {
+                            case 'ffffff': return 'W';
+                            case 'ffff00': return 'Y';
+                            case 'ff0000': return 'R';
+                            case 'ffa500': return 'O';
+                            case 'ff': return 'B';
+                            case 'ff00': return 'G';
+                            default: 
+                                console.warn(`Unknown color value: ${colorHex} for face ${face}`);
+                                return '?';
+                        }
+                    }).join(' ')
+                ).join('\n')}`;
+            };
+
+            try {
+                // Update each face display
+                const faces = ['top', 'right', 'front', 'back', 'bottom', 'left'];
+                faces.forEach(face => {
+                    const element = document.getElementById(`${face}-face`);
+                    if (!element) {
+                        console.error(`Element not found for face: ${face}`);
+                        return;
+                    }
+                    const faceColors = cubeState.state[face];
+                    if (!faceColors) {
+                        console.error(`No colors found for face: ${face}`);
+                        return;
+                    }
+                    element.textContent = formatFace(face, faceColors);
+                });
+                console.log('Cube state display updated successfully');
+            } catch (error) {
+                console.error('Error updating cube state display:', error);
+            }
+        }
+
+        function resetCube() {
+            if (isAnimating) return;
+            
+            // Reset all cubelets to their original positions and materials
+            cubelets.forEach(cubelet => {
+                // Reset position
+                cubelet.position.set(
+                    cubelet.userData.originalPosition.x,
+                    cubelet.userData.originalPosition.y,
+                    cubelet.userData.originalPosition.z
+                );
+                
+                // Reset materials to original colors
+                const materials = cubelet.material;
+                const x = cubelet.userData.originalPosition.x;
+                const y = cubelet.userData.originalPosition.y;
+                const z = cubelet.userData.originalPosition.z;
+                
+                // Reset all materials to black first
+                materials.forEach(material => {
+                    material.color.setHex(0x000000);
+                });
+                
+                // Set colors for outside faces
+                if (x === 1) materials[0].color.setHex(colors.red);
+                if (x === -1) materials[1].color.setHex(colors.orange);
+                if (y === 1) materials[2].color.setHex(colors.white);
+                if (y === -1) materials[3].color.setHex(colors.yellow);
+                if (z === 1) materials[4].color.setHex(colors.blue);
+                if (z === -1) materials[5].color.setHex(colors.green);
+            });
+            
+            // Clear move history
+            moveHistory = [];
+        }
+
+        function scrambleCube() {
+            if (isScrambling) return;
+            
+            isScrambling = true;
+            const faces = ['white', 'yellow', 'red', 'orange', 'blue', 'green'];
+            const moves = 20;
+            
+            // Clear move history before scrambling
+            moveHistory = [];
+            
+            // Create queue of moves
+            for (let i = 0; i < moves; i++) {
+                const face = faces[Math.floor(Math.random() * faces.length)];
+                const angle = Math.PI / 2;
+                scrambleQueue.push({ face, angle });
+            }
+            
+            // Start the first move
+            if (scrambleQueue.length > 0) {
+                const move = scrambleQueue.shift();
+                startRotation(move.face, move.angle);
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            updateRotation();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (isAnimating) return;
+            
+            switch (event.key.toLowerCase()) {
+                case 'w':
+                    startRotation('white', Math.PI / 2);
+                    break;
+                case 'y':
+                    startRotation('yellow', Math.PI / 2);
+                    break;
+                case 'r':
+                    startRotation('red', Math.PI / 2);
+                    break;
+                case 'o':
+                    startRotation('orange', Math.PI / 2);
+                    break;
+                case 'b':
+                    startRotation('blue', Math.PI / 2);
+                    break;
+                case 'g':
+                    startRotation('green', Math.PI / 2);
+                    break;
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html> 

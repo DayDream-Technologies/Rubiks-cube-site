@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Model Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+        }
+        #model-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="model-container">
+        <canvas id="modelCanvas"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("modelCanvas") });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById("model-container").appendChild(renderer.domElement);
+
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5).normalize();
+            scene.add(directionalLight);
+
+            const loader = new THREE.GLTFLoader();
+            loader.load('models/scene.gltf', function(gltf) {
+                const model = gltf.scene;
+                
+                // Create a group to hold the model
+                const modelGroup = new THREE.Group();
+                modelGroup.add(model);
+                scene.add(modelGroup);
+
+                // Center the model geometry
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                model.position.sub(center); // Center the model
+
+                // Rotate the model group
+                function animate() {
+                    requestAnimationFrame(animate);
+                    modelGroup.rotation.y += 0.01; // Rotate around the Y axis
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+
+                animate();
+            }, undefined, function(error) {
+                console.error(error);
+            });
+
+            camera.position.z = 5;
+
+            // Add OrbitControls
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.update();
+
+            window.addEventListener("resize", () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (!cube) return;
+            switch (event.key) {
+                case 'x':
+                    modelGroup.rotation.x += Math.PI / 2;
+                    console.log('x');
+                    break;
+                case 'y':
+                    modelGroup.rotation.y += Math.PI / 2;
+                    break;
+                case 'z':
+                    modelGroup.rotation.z += Math.PI / 2;
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

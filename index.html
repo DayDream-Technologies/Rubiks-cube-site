@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bluetooth Rubik's Cube</title>
+    <link rel="stylesheet" href="src/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+        }
+        nav {
+            background: #222;
+            padding: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: rgba(255, 69, 0, 0.8);
+            transition: background 0.3s, transform 0.2s;
+        }
+        nav ul li a:hover {
+            background: rgba(255, 99, 71, 0.9);
+            transform: scale(1.05);
+        }
+        #hero {
+            padding: 50px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #hero::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.6), transparent);
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: -1;
+        }
+        #product-features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px 20px;
+        }
+        .feature-box {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
+        }
+        button {
+            background: #ff4500;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #ff6347;
+            transform: scale(1.05);
+        }
+        #model-preview {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
+        }
+        #model-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .model-description {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./medical-research.html">Medical Research</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <h1>High-Tech Bluetooth Rubik's Cube</h1>
+            <p>Learn to solve the Rubik's Cube with an interactive smart program.</p>
+            <button id="shopNow">Shop Now</button>
+        </section>
+        
+        <section id="model-preview">
+            <h2>Interactive Rubik's Cube</h2>
+            <div class="model-description">
+                <p>Experience our interactive Rubik's Cube with full 3D controls. Rotate faces, scramble the cube, and learn solving techniques.</p>
+                <p>Features:</p>
+                <ul>
+                    <li>Full 3D visualization</li>
+                    <li>Mouse and keyboard controls</li>
+                    <li>Reset and scramble functions</li>
+                    <li>Realistic physics and animations</li>
+                </ul>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="window.location.href='model.html'">Try Interactive Cube</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="product-features">
+            <div class="feature-box">
+                <h3>Smart Guidance</h3>
+                <p>Step-by-step solutions with real-time feedback.</p>
+            </div>
+            <div class="feature-box">
+                <h3>Easy Connectivity</h3>
+                <p>Connect via Bluetooth for an interactive experience.</p>
+            </div>
+            <div class="feature-box">
+                <h3>Custom Challenges</h3>
+                <p>Practice custom algorithms and improve your speed.</p>
+            </div>
+        </section>
+    </main>
+    <footer style="background-color: #222; color: white; padding: 20px; text-align: center; margin-top: 40px;">
+        <p>&copy; 2025 DayDream Technologies. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById('shopNow').addEventListener('click', function() {
+            window.location.href = 'research.html';
+        });
+    </script>
+</body>
+</html>
