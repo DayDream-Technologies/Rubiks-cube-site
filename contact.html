@@ -85,6 +85,71 @@
             background: #ff6347;
             transform: scale(1.05);
         }
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .contact-card {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
+            text-align: center;
+        }
+        .contact-link {
+            color: #ff4500;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: white;
+            font-size: 16px;
+        }
+        .form-group select {
+            cursor: pointer;
+        }
+        .faq-section {
+            margin-top: 40px;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
+        }
+        .faq-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #333;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-item h3 {
+            color: #ff4500;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -98,20 +163,57 @@
         </nav>
     </header>
     <main>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <form action="https://formspree.io/f/xjkgevyv" method="POST">
-                <label>
-                    Your email:
-                    <input type="email" name="email" required>
-                </label>
-                <label>
-                    Your message:
-                    <textarea name="message" required></textarea>
-                </label>
-                <button type="submit">Send</button>
-            </form>
-        </section>
+            <section id="contact">
+                <h2>Send Us a Message</h2>
+                <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+                <form action="https://formspree.io/f/xjkgevyv" method="POST">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a subject</option>
+                            <option value="preorder">Preorder Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="partnership">Business Partnership</option>
+                            <option value="research">Research Collaboration</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                </form>
+            </section>
+
+            <div class="faq-section">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-item">
+                    <h3>When will the Bluetooth Rubik's Cube be available?</h3>
+                    <p>We are currently in the development phase and expect to begin shipping in Q4 2024. You can place a preorder now to secure your spot in the first production batch.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What is the expected price?</h3>
+                    <p>The retail price will be $74.99. Preorders are available now with no payment required until the product is ready to ship.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What features will the cube include?</h3>
+                    <p>Our Bluetooth Rubik's Cube will feature interactive learning capabilities, real-time solving guidance, customizable challenges, and durable construction.</p>
+                </div>
+            </div>
+        </div>
     </main>
+    <footer style="background-color: #222; color: white; padding: 20px; text-align: center; margin-top: 40px;">
+        <p>&copy; 2025 DayDream Technologies. All rights reserved.</p>
+        <p>Contact us at <a href="mailto:info@daydreamtechnologies.net" style="color: #ff4500; text-decoration: none;">info@daydreamtechnologies.net</a></p>
+    </footer>
 </body>
 </html>
