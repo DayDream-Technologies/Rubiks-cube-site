@@ -88,7 +88,8 @@
         Controls:<br>
         Mouse: Rotate view<br>
         Scroll: Zoom<br>
-        Keys: Rotate faces (W, Y, R, O, B, G)
+        Keys: Rotate faces (W, Y, R, O, B, G)<br>
+        Reverse Rotation: Hold shift + key
     </div>
     <div id="cubeState">
         <div class="face-display" id="top-face"></div>
@@ -114,6 +115,7 @@
         let scene, camera, renderer, controls;
         let cubelets = [];
         let isAnimating = false;
+        let rotateLeft = 1;
         let currentRotation = 0;
         let targetRotation = 0;
         let rotatingFace = null;
@@ -678,7 +680,7 @@
                 pos.sub(rotatingPivot);
                 
                 // Apply rotation
-                pos.applyAxisAngle(rotatingAxis, step);
+                pos.applyAxisAngle(rotatingAxis, rotateLeft*step);
                 
                 // Move back from origin
                 pos.add(rotatingPivot);
@@ -718,61 +720,84 @@
                 // Update materials based on the face being rotated
                 switch (rotatingFace) {
                     case 'white':
-                        // Rotate materials clockwise
-                        materials[0] = tempMaterials[4]; // right
-                        materials[1] = tempMaterials[5]; // left
-                        materials[2] = tempMaterials[2]; // top
-                        materials[3] = tempMaterials[3]; // bottom
-                        materials[4] = tempMaterials[1]; // front
-                        materials[5] = tempMaterials[0]; // back
+                        if(rotateLeft == 1){
+                            materials[0] = tempMaterials[4]; // right
+                            materials[1] = tempMaterials[5]; // left
+                            materials[4] = tempMaterials[1]; // front
+                            materials[5] = tempMaterials[0]; // back
+                        } else {
+                            materials[0] = tempMaterials[5]; // right
+                            materials[1] = tempMaterials[4]; // left
+                            materials[4] = tempMaterials[0]; // front
+                            materials[5] = tempMaterials[1]; // back
+                        }
                         break;
                     case 'yellow':
-                        // Rotate materials counter-clockwise
-                        materials[0] = tempMaterials[5]; // right
-                        materials[1] = tempMaterials[4]; // left
-                        materials[2] = tempMaterials[2]; // top
-                        materials[3] = tempMaterials[3]; // bottom
-                        materials[4] = tempMaterials[0]; // front
-                        materials[5] = tempMaterials[1]; // back
+                        if(rotateLeft == 1){
+                            materials[0] = tempMaterials[5]; // right
+                            materials[1] = tempMaterials[4]; // left
+                            materials[4] = tempMaterials[0]; // front
+                            materials[5] = tempMaterials[1]; // back
+                        } else {
+                            materials[0] = tempMaterials[4]; // right
+                            materials[1] = tempMaterials[5]; // left
+                            materials[4] = tempMaterials[1]; // front
+                            materials[5] = tempMaterials[0]; // back
+                        }
                         break;
                     case 'red':
-                        // Rotate materials clockwise
-                        materials[0] = tempMaterials[0]; // right
-                        materials[1] = tempMaterials[1]; // left
-                        materials[2] = tempMaterials[5]; // top
-                        materials[3] = tempMaterials[4]; // bottom
-                        materials[4] = tempMaterials[2]; // front
-                        materials[5] = tempMaterials[3]; // back
+                        if(rotateLeft == 1){
+                            materials[2] = tempMaterials[5]; // top
+                            materials[3] = tempMaterials[4]; // bottom
+                            materials[4] = tempMaterials[2]; // front
+                            materials[5] = tempMaterials[3]; // back
+                        } else {
+                            materials[2] = tempMaterials[4]; // top
+                            materials[3] = tempMaterials[5]; // bottom
+                            materials[4] = tempMaterials[3]; // front
+                            materials[5] = tempMaterials[2]; // back
+                        }
                         break;
                     case 'orange':
-                        // Rotate materials counter-clockwise
-                        materials[0] = tempMaterials[0]; // right
-                        materials[1] = tempMaterials[1]; // left
-                        materials[2] = tempMaterials[4]; // top
-                        materials[3] = tempMaterials[5]; // bottom
-                        materials[4] = tempMaterials[3]; // front
-                        materials[5] = tempMaterials[2]; // back
+                        if (rotateLeft == 1){
+                            materials[2] = tempMaterials[4]; // top
+                            materials[3] = tempMaterials[5]; // bottom
+                            materials[4] = tempMaterials[3]; // front
+                            materials[5] = tempMaterials[2]; // back
+                        } else {
+                            materials[2] = tempMaterials[5]; // top
+                            materials[3] = tempMaterials[4]; // bottom
+                            materials[4] = tempMaterials[2]; // front
+                            materials[5] = tempMaterials[3]; // back
+                        }
                         break;
                     case 'blue':
-                        // Rotate materials clockwise
-                        materials[0] = tempMaterials[3]; // right
-                        materials[1] = tempMaterials[2]; // left
-                        materials[2] = tempMaterials[0]; // top
-                        materials[3] = tempMaterials[1]; // bottom
-                        materials[4] = tempMaterials[4]; // front
-                        materials[5] = tempMaterials[5]; // back
+                        if (rotateLeft == 1){
+                            materials[0] = tempMaterials[3]; // right
+                            materials[1] = tempMaterials[2]; // left
+                            materials[2] = tempMaterials[0]; // top
+                            materials[3] = tempMaterials[1]; // bottom
+                        } else {
+                            materials[0] = tempMaterials[2]; // right
+                            materials[1] = tempMaterials[3]; // left
+                            materials[2] = tempMaterials[1]; // top
+                            materials[3] = tempMaterials[0]; // bottom
+                        }
                         break;
                     case 'green':
-                        // Rotate materials counter-clockwise
-                        materials[0] = tempMaterials[2]; // right
-                        materials[1] = tempMaterials[3]; // left
-                        materials[2] = tempMaterials[1]; // top
-                        materials[3] = tempMaterials[0]; // bottom
-                        materials[4] = tempMaterials[4]; // front
-                        materials[5] = tempMaterials[5]; // back
+                        if (rotateLeft == 1) {
+                            materials[0] = tempMaterials[2]; // right
+                            materials[1] = tempMaterials[3]; // left
+                            materials[2] = tempMaterials[1]; // top
+                            materials[3] = tempMaterials[0]; // bottom
+                        } else {
+                            materials[0] = tempMaterials[3]; // right
+                            materials[1] = tempMaterials[2]; // left
+                            materials[2] = tempMaterials[0]; // top
+                            materials[3] = tempMaterials[1]; // bottom
+                        }
                         break;
                 }
-
                 // Update colors based on final position
 //                if (Math.abs(pos.x) === 1) {
 //                    materials[0].color.setHex(pos.x > 0 ? colors.red : colors.orange);
@@ -919,6 +944,7 @@
         window.addEventListener('keydown', (event) => {
             if (isAnimating) return;
             
+            rotateLeft = event.shiftKey ? -1 : 1;
             switch (event.key.toLowerCase()) {
                 case 'w':
                     startRotation('white', Math.PI / 2);
