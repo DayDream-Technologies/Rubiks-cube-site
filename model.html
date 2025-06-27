@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Rubik's Cube</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <style>
         body {
             margin: 0;
@@ -31,7 +32,7 @@
         }
         #info {
             position: absolute;
-            top: 10px;
+            top: 75px;
             left: 10px;
             color: white;
             background-color: rgba(0, 0, 0, 0.7);
@@ -41,7 +42,7 @@
         }
         #cubeState {
             position: absolute;
-            top: 10px;
+            top: 75px;
             right: 10px;
             color: white;
             background-color: rgba(0, 0, 0, 0.7);
@@ -60,17 +61,18 @@
             text-align: center;
         }
         #controls {
-            position: absolute;
-            bottom: 20px;
+            position: fixed;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 10px;
+            z-index: 1001;
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #4CAF50;
+            background-color: #ff4500;
             color: white;
             border: none;
             border-radius: 5px;
@@ -78,12 +80,122 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #ff6347;
+        }
+        
+        /* Statistics Popup Styles */
+        .stats-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            text-align: center;
+            min-width: 300px;
+            border: 2px solid #ff4500;
+        }
+        
+        .stats-popup h2 {
+            color: #ff4500;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .stats-popup .stat-item {
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        
+        .stats-popup .stat-value {
+            color: #ff4500;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .stats-popup button {
+            margin-top: 20px;
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .stats-popup button:hover {
+            background-color: #ff6347;
+        }
+        
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1999;
+        }
+        
+        /* Difficulty Dropdown Styles */
+        .difficulty-dropdown {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            text-align: center;
+            min-width: 250px;
+            border: 2px solid #ff4500;
+        }
+        
+        .difficulty-dropdown h3 {
+            color: #ff4500;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .difficulty-option {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            text-align: left;
+        }
+        
+        .difficulty-option:hover {
+            background-color: #ff4500;
+        }
+        
+        .difficulty-option .move-count {
+            color: #ff4500;
+            font-weight: bold;
+            float: right;
         }
     </style>
 </head>
 <body>
-    <button id="home-button" onclick="window.location.href='index.html'">Home</button>
+    <header style="position: fixed; top: 0; left: 0; right: 0; background-color: #222; color: white; padding: 30px; text-align: center; z-index: 1000;">
+        <button id="home-button" onclick="window.location.href='index.html'">Home</button>
+    </header>
     <div id="info">
         Controls:<br>
         Mouse: Rotate view<br>
@@ -102,12 +214,33 @@
     <div id="controls">
         <button onclick="resetCube()">Reset</button>
         <button onclick="scrambleCube()">Scramble</button>
+        <button onclick="generateDailyPuzzle()">Daily Puzzle</button>
+        <button onclick="showDifficultyDropdown()">New Puzzle</button>
     </div>
 
-    <footer style="background-color: #222; color: white; padding: 20px; text-align: center; margin-top: 40px;">
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; background-color: #222; color: white; padding: 12px; text-align: center; z-index: 1000;">
         <p>&copy; 2025 DayDream Technologies. All rights reserved.</p>
         <p>Contact us at <a href="mailto:info@daydreamtechnologies.net" style="color: #ff4500; text-decoration: none;">info@daydreamtechnologies.net</a></p>
     </footer>
+
+    <!-- Statistics Popup -->
+    <div id="stats-overlay" class="popup-overlay" style="display: none;"></div>
+    <div id="stats-popup" class="stats-popup" style="display: none;">
+        <h2>🎉 Daily Puzzle Solved!</h2>
+        <div class="stat-item">
+            <span>Moves Used:</span>
+            <div class="stat-value" id="moves-used">0</div>
+        </div>
+        <div class="stat-item">
+            <span>Time Taken:</span>
+            <div class="stat-value" id="time-taken">0:00</div>
+        </div>
+        <div class="stat-item">
+            <span>Attempts:</span>
+            <div class="stat-value" id="attempts">1</div>
+        </div>
+        <button onclick="closeStatsPopup()">Continue</button>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -135,6 +268,377 @@
         let scrambleQueue = [];
         let isScrambling = false;
         let moveHistory = []; // Store all moves in order
+        let dailyPuzzleApplied = false; // Track if daily puzzle has been applied
+
+        // Statistics tracking variables
+        let dailyPuzzleStartTime = null;
+        let dailyPuzzleAttempts = 0;
+        let dailyPuzzleSolved = false;
+        let solvedState = null; // Store the solved state for comparison
+        let dailyPuzzleReady = false; // Track when daily puzzle is ready for solving
+        
+        // Manual scramble statistics tracking variables
+        let manualScrambleStartTime = null;
+        let manualScrambleAttempts = 0;
+        let manualScrambleSolved = false;
+        let manualScrambleActive = false; // Track if manual scramble is active
+        
+        // New puzzle statistics tracking variables
+        let newPuzzleStartTime = null;
+        let newPuzzleAttempts = 0;
+        let newPuzzleSolved = false;
+        let newPuzzleActive = false; // Track if new puzzle is active
+        let newPuzzleDifficulty = ''; // Store the current difficulty
+
+        // Daily Puzzle Generator
+        function generateDailyPuzzle() {
+            if (isScrambling) return;
+            
+            // Always reset the cube to solved state before applying daily puzzle
+            resetCube();
+            dailyPuzzleApplied = false;
+            
+            // Initialize statistics tracking for new daily puzzle
+            dailyPuzzleStartTime = Date.now();
+            dailyPuzzleAttempts++;
+            dailyPuzzleSolved = false;
+            dailyPuzzleReady = false;
+            
+            // Reset new puzzle statistics
+            newPuzzleStartTime = null;
+            newPuzzleAttempts = 0;
+            newPuzzleSolved = false;
+            newPuzzleActive = false;
+            newPuzzleDifficulty = '';
+            
+            // Store the solved state for comparison
+            solvedState = new CubeState();
+            
+            const moves = getDailyPuzzleMoves();
+            // console.log('Daily Puzzle Moves:', moves);
+            
+            // Clear move history and scramble queue
+            moveHistory = [];
+            scrambleQueue = [];
+            
+            // Convert moves to rotation commands
+            const moveToRotation = {
+                'U': { face: 'white', angle: Math.PI / 2, direction: 1 },
+                "U'": { face: 'white', angle: Math.PI / 2, direction: -1 },
+                'D': { face: 'yellow', angle: Math.PI / 2, direction: 1 },
+                "D'": { face: 'yellow', angle: Math.PI / 2, direction: -1 },
+                'L': { face: 'orange', angle: Math.PI / 2, direction: 1 },
+                "L'": { face: 'orange', angle: Math.PI / 2, direction: -1 },
+                'R': { face: 'red', angle: Math.PI / 2, direction: 1 },
+                "R'": { face: 'red', angle: Math.PI / 2, direction: -1 },
+                'F': { face: 'blue', angle: Math.PI / 2, direction: 1 },
+                "F'": { face: 'blue', angle: Math.PI / 2, direction: -1 },
+                'B': { face: 'green', angle: Math.PI / 2, direction: 1 },
+                "B'": { face: 'green', angle: Math.PI / 2, direction: -1 }
+            };
+            
+            // Add moves to scramble queue
+            moves.forEach(move => {
+                const rotation = moveToRotation[move];
+                if (rotation) {
+                    scrambleQueue.push(rotation);
+                }
+            });
+            
+            // Hide the cube before starting daily puzzle
+            hideCube();
+            
+            // Start the first move
+            if (scrambleQueue.length > 0) {
+                isScrambling = true;
+                dailyPuzzleApplied = true;
+                const move = scrambleQueue.shift();
+                rotateLeft = move.direction || 1; // Use move direction or default to 1
+                startRotation(move.face, move.angle);
+            }
+        }
+
+        // Function to hide the cube
+        function hideCube() {
+            cubelets.forEach(cubelet => {
+                cubelet.visible = false;
+            });
+        }
+
+        // Function to show the cube
+        function showCube() {
+            cubelets.forEach(cubelet => {
+                cubelet.visible = true;
+            });
+        }
+
+        // Function to check if cube is solved
+        function checkIfSolved() {
+            // Check for daily puzzle solve
+            if (dailyPuzzleApplied && !dailyPuzzleSolved && !isScrambling && dailyPuzzleReady) {
+                const isSolved = isCubeSolved();
+                if (isSolved) {
+                    dailyPuzzleSolved = true;
+                    showStatsPopup('Daily Puzzle');
+                }
+            }
+            
+            // Check for manual scramble solve
+            if (manualScrambleActive && !manualScrambleSolved && !isScrambling) {
+                const isSolved = isCubeSolved();
+                if (isSolved) {
+                    manualScrambleSolved = true;
+                    showStatsPopup('Manual Scramble');
+                }
+            }
+            
+            // Check for new puzzle solve
+            if (newPuzzleActive && !newPuzzleSolved && !isScrambling) {
+                const isSolved = isCubeSolved();
+                if (isSolved) {
+                    newPuzzleSolved = true;
+                    showStatsPopup('New Puzzle');
+                }
+            }
+        }
+
+        // Function to check if cube is solved by comparing colors
+        function isCubeSolved() {
+            // Define the solved state colors for each face
+            const solvedColors = {
+                front: colors.blue,   // Blue
+                back: colors.green,   // Green
+                top: colors.white,    // White
+                bottom: colors.yellow, // Yellow
+                left: colors.orange,  // Orange
+                right: colors.red     // Red
+            };
+            
+            // Check each face
+            const faces = ['front', 'back', 'top', 'bottom', 'left', 'right'];
+            
+            for (const face of faces) {
+                if (!isFaceSolved(face, solvedColors[face])) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Function to check if a specific face is solved
+        function isFaceSolved(face, expectedColor) {
+            const faceIndices = getFaceIndices(face);
+            
+            for (const index of faceIndices) {
+                const cubelet = cubelets[index];
+                const material = getFaceMaterial(cubelet, face);
+                
+                if (material.color.getHex() !== expectedColor) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Function to get cubelet indices for a specific face
+        function getFaceIndices(face) {
+            const indices = [];
+            
+            for (let i = 0; i < cubelets.length; i++) {
+                const cubelet = cubelets[i];
+                const pos = cubelet.position;
+                
+                switch (face) {
+                    case 'front':
+                        if (Math.abs(pos.z - 1) < 0.1) indices.push(i);
+                        break;
+                    case 'back':
+                        if (Math.abs(pos.z + 1) < 0.1) indices.push(i);
+                        break;
+                    case 'top':
+                        if (Math.abs(pos.y - 1) < 0.1) indices.push(i);
+                        break;
+                    case 'bottom':
+                        if (Math.abs(pos.y + 1) < 0.1) indices.push(i);
+                        break;
+                    case 'left':
+                        if (Math.abs(pos.x + 1) < 0.1) indices.push(i);
+                        break;
+                    case 'right':
+                        if (Math.abs(pos.x - 1) < 0.1) indices.push(i);
+                        break;
+                }
+            }
+            
+            return indices;
+        }
+
+        // Function to get the material for a specific face of a cubelet
+        function getFaceMaterial(cubelet, face) {
+            const pos = cubelet.position;
+            const materials = cubelet.material;
+            
+            // Determine which material corresponds to the face
+            if (Math.abs(pos.x - 1) < 0.1 && face === 'right') return materials[0];
+            if (Math.abs(pos.x + 1) < 0.1 && face === 'left') return materials[1];
+            if (Math.abs(pos.y - 1) < 0.1 && face === 'top') return materials[2];
+            if (Math.abs(pos.y + 1) < 0.1 && face === 'bottom') return materials[3];
+            if (Math.abs(pos.z - 1) < 0.1 && face === 'front') return materials[4];
+            if (Math.abs(pos.z + 1) < 0.1 && face === 'back') return materials[5];
+            
+            // For edge and corner pieces, find the material that faces the correct direction
+            if (face === 'right' && pos.x > 0) return materials[0];
+            if (face === 'left' && pos.x < 0) return materials[1];
+            if (face === 'top' && pos.y > 0) return materials[2];
+            if (face === 'bottom' && pos.y < 0) return materials[3];
+            if (face === 'front' && pos.z > 0) return materials[4];
+            if (face === 'back' && pos.z < 0) return materials[5];
+            
+            return null;
+        }
+
+        // Function to show statistics popup
+        function showStatsPopup(type) {
+            let startTime, attempts, difficulty = '';
+            
+            if (type === 'Daily Puzzle') {
+                startTime = dailyPuzzleStartTime;
+                attempts = dailyPuzzleAttempts;
+                // Reset attempts counter after successful solve
+                dailyPuzzleAttempts = 0;
+            } else if (type === 'Manual Scramble') {
+                startTime = manualScrambleStartTime;
+                attempts = manualScrambleAttempts;
+                // Reset attempts counter after successful solve
+                manualScrambleAttempts = 0;
+            } else if (type === 'New Puzzle') {
+                startTime = newPuzzleStartTime;
+                attempts = newPuzzleAttempts;
+                difficulty = newPuzzleDifficulty;
+                // Reset attempts counter after successful solve
+                newPuzzleAttempts = 0;
+            } else {
+                return;
+            }
+            
+            const timeElapsed = Date.now() - startTime;
+            const minutes = Math.floor(timeElapsed / 60000);
+            const seconds = Math.floor((timeElapsed % 60000) / 1000);
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Get elements with error checking
+            const movesUsedElement = document.getElementById('moves-used');
+            const timeTakenElement = document.getElementById('time-taken');
+            const attemptsElement = document.getElementById('attempts');
+            const statsOverlayElement = document.getElementById('stats-overlay');
+            const statsPopupElement = document.getElementById('stats-popup');
+            const titleElement = document.querySelector('#stats-popup h2');
+            
+            // Check if all required elements exist
+            if (!movesUsedElement || !timeTakenElement || !attemptsElement || 
+                !statsOverlayElement || !statsPopupElement || !titleElement) {
+                console.error('Stats popup elements not found:', {
+                    movesUsed: !!movesUsedElement,
+                    timeTaken: !!timeTakenElement,
+                    attempts: !!attemptsElement,
+                    statsOverlay: !!statsOverlayElement,
+                    statsPopup: !!statsPopupElement,
+                    title: !!titleElement
+                });
+                return;
+            }
+            
+            // Update stats
+            movesUsedElement.textContent = moveHistory.length;
+            timeTakenElement.textContent = timeString;
+            attemptsElement.textContent = attempts;
+            
+            // Update the title based on the type
+            if (type === 'Daily Puzzle') {
+                titleElement.textContent = '🎉 Daily Puzzle Solved!';
+            } else if (type === 'Manual Scramble') {
+                titleElement.textContent = '🎉 Manual Scramble Solved!';
+            } else if (type === 'New Puzzle') {
+                const difficultyText = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+                titleElement.textContent = `🎉 ${difficultyText} Puzzle Solved!`;
+            }
+            
+            // Show the popup
+            statsOverlayElement.style.display = 'block';
+            statsPopupElement.style.display = 'block';
+        }
+
+        // Function to close statistics popup
+        function closeStatsPopup() {
+            document.getElementById('stats-overlay').style.display = 'none';
+            document.getElementById('stats-popup').style.display = 'none';
+        }
+
+        // Function to get daily puzzle moves without executing them
+        function getDailyPuzzleMovesOnly() {
+            return getDailyPuzzleMoves();
+        }
+
+        // Deterministic daily puzzle generator
+        function getDailyPuzzleMoves() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1; // getMonth() returns 0-11
+            const day = today.getDate();
+            
+            // Generate seed: YYYY * 10000 + MM * 100 + DD
+            const seed = year * 10000 + month * 100 + day;
+            // console.log(`Date: ${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}, Seed: ${seed}`);
+            
+            // Simple linear congruential generator
+            let randomState = seed;
+            function nextRandom() {
+                randomState = (randomState * 1103515245 + 12345) & 0x7fffffff;
+                return randomState / 0x7fffffff;
+            }
+            
+            const movePool = ['U', "U'", 'D', "D'", 'L', "L'", 'R', "R'", 'F', "F'", 'B', "B'"];
+            const moves = [];
+            let previousMove = null;
+            
+            // Generate exactly 3 moves
+            for (let i = 0; i < 3; i++) {
+                let move;
+                do {
+                    const randomIndex = Math.floor(nextRandom() * movePool.length);
+                    move = movePool[randomIndex];
+                } while (isUndoMove(previousMove, move)); // Avoid undo moves
+                
+                moves.push(move);
+                previousMove = move;
+            }
+            
+            return moves;
+        }
+
+        // Check if a move undoes the previous move
+        function isUndoMove(previousMove, currentMove) {
+            if (!previousMove) return false;
+            
+            const undoPairs = {
+                'U': "U'",
+                "U'": 'U',
+                'D': "D'",
+                "D'": 'D',
+                'L': "L'",
+                "L'": 'L',
+                'R': "R'",
+                "R'": 'R',
+                'F': "F'",
+                "F'": 'F',
+                'B': "B'",
+                "B'": 'B'
+            };
+            
+            return undoPairs[previousMove] === currentMove;
+        }
 
         // Cube state data structure
         class CubeState {
@@ -196,7 +700,7 @@
                     }
                 });
 
-                console.log('State after fromVisual:', state.state);
+                // console.log('State after fromVisual:', state.state);
                 return state;
             }
 
@@ -519,17 +1023,21 @@
 
         function init() {
             scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x1a1a1a);
+            
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(5, 5, 5);
+            
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             document.body.appendChild(renderer.domElement);
-
+            
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
-
-            camera.position.z = 5;
-
+            
             // Improved lighting setup
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
             scene.add(ambientLight);
@@ -541,9 +1049,10 @@
             const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
             directionalLight2.position.set(-5, -5, -5);
             scene.add(directionalLight2);
-
+            
             createCube();
             updateCubeStateDisplay();
+            
             animate();
         }
 
@@ -694,12 +1203,25 @@
                 updateMaterials();
                 updateCubeStateDisplay(); // Update display after rotation completes
                 
+                // Check if cube is solved after each move
+                checkIfSolved();
+                
                 // If we're scrambling, start the next move
                 if (isScrambling && scrambleQueue.length > 0) {
                     const move = scrambleQueue.shift();
+                    rotateLeft = move.direction || 1; // Use move direction or default to 1
                     startRotation(move.face, move.angle);
                 } else if (isScrambling) {
                     isScrambling = false;
+                    // Show the cube when daily puzzle is complete
+                    if (dailyPuzzleApplied) {
+                        showCube();
+                        dailyPuzzleReady = true; // Mark daily puzzle as ready for solving
+                    }
+                    // Show the cube when new puzzle is complete
+                    if (newPuzzleActive) {
+                        showCube();
+                    }
                 }
             }
         }
@@ -818,15 +1340,15 @@
         }
 
         function updateCubeStateDisplay() {
-            console.log('Updating cube state display...');
+            // console.log('Updating cube state display...');
             
             // Create a new cube state from the current visual state
             const cubeState = CubeState.fromVisual(cubelets);
-            console.log('Current cube state:', cubeState.state);
+            // console.log('Current cube state:', cubeState.state);
             
             // Helper function to format a face
             const formatFace = (face, colors) => {
-                console.log(`Formatting ${face} face:`, colors);
+                // console.log(`Formatting ${face} face:`, colors);
                 return `${face.toUpperCase()}:\n${colors.map(row => 
                     row.map(color => {
                         // Convert color to hex string for comparison
@@ -839,7 +1361,7 @@
                             case 'ff': return 'B';
                             case 'ff00': return 'G';
                             default: 
-                                console.warn(`Unknown color value: ${colorHex} for face ${face}`);
+                                // console.warn(`Unknown color value: ${colorHex} for face ${face}`);
                                 return '?';
                         }
                     }).join(' ')
@@ -852,24 +1374,51 @@
                 faces.forEach(face => {
                     const element = document.getElementById(`${face}-face`);
                     if (!element) {
-                        console.error(`Element not found for face: ${face}`);
+                        // console.error(`Element not found for face: ${face}`);
                         return;
                     }
                     const faceColors = cubeState.state[face];
                     if (!faceColors) {
-                        console.error(`No colors found for face: ${face}`);
+                        // console.error(`No colors found for face: ${face}`);
                         return;
                     }
                     element.textContent = formatFace(face, faceColors);
                 });
-                console.log('Cube state display updated successfully');
+                // console.log('Cube state display updated successfully');
             } catch (error) {
-                console.error('Error updating cube state display:', error);
+                // console.error('Error updating cube state display:', error);
             }
         }
 
         function resetCube() {
             if (isAnimating) return;
+            
+            // Clear scramble queue and reset scrambling state
+            scrambleQueue = [];
+            isScrambling = false;
+            dailyPuzzleApplied = false;
+            
+            // Reset daily puzzle statistics
+            dailyPuzzleStartTime = null;
+            dailyPuzzleSolved = false;
+            solvedState = null;
+            dailyPuzzleReady = false;
+            
+            // Reset manual scramble statistics
+            manualScrambleStartTime = null;
+            manualScrambleAttempts = 0;
+            manualScrambleSolved = false;
+            manualScrambleActive = false;
+            
+            // Reset new puzzle statistics
+            newPuzzleStartTime = null;
+            newPuzzleAttempts = 0;
+            newPuzzleSolved = false;
+            newPuzzleActive = false;
+            newPuzzleDifficulty = '';
+            
+            // Ensure cube is visible
+            showCube();
             
             // Reset all cubelets to their original positions and materials
             cubelets.forEach(cubelet => {
@@ -902,12 +1451,42 @@
             
             // Clear move history
             moveHistory = [];
+            
+            // Update the cube state display
+            updateCubeStateDisplay();
         }
 
         function scrambleCube() {
             if (isScrambling) return;
             
             isScrambling = true;
+            dailyPuzzleApplied = false; // Reset daily puzzle flag
+            
+            // Reset daily puzzle statistics
+            dailyPuzzleStartTime = null;
+            dailyPuzzleSolved = false;
+            solvedState = null;
+            dailyPuzzleReady = false;
+            
+            // Reset new puzzle statistics
+            newPuzzleStartTime = null;
+            newPuzzleAttempts = 0;
+            newPuzzleSolved = false;
+            newPuzzleActive = false;
+            newPuzzleDifficulty = '';
+            
+            // Initialize manual scramble statistics tracking
+            manualScrambleStartTime = Date.now();
+            manualScrambleAttempts++;
+            manualScrambleSolved = false;
+            manualScrambleActive = true;
+            
+            // Store the solved state for comparison
+            solvedState = new CubeState();
+            
+            // Ensure cube is visible for manual scramble
+            showCube();
+            
             const faces = ['white', 'yellow', 'red', 'orange', 'blue', 'green'];
             const moves = 20;
             
@@ -968,6 +1547,169 @@
         });
 
         init();
+
+        // Global function for testing - can be called from browser console
+        window.getTodaysPuzzle = function() {
+            const moves = getDailyPuzzleMoves();
+            // console.log('Today\'s puzzle moves:', moves);
+            return moves;
+        };
+
+        // New Puzzle Generator
+        function showDifficultyDropdown() {
+            // Remove existing dropdown if present
+            const existingDropdown = document.querySelector('.difficulty-dropdown');
+            const existingOverlay = document.getElementById('difficulty-overlay');
+            if (existingDropdown) existingDropdown.remove();
+            if (existingOverlay) existingOverlay.remove();
+            
+            const overlay = document.createElement('div');
+            overlay.id = 'difficulty-overlay';
+            overlay.className = 'popup-overlay';
+            overlay.onclick = () => {
+                overlay.remove();
+                dropdown.remove();
+            };
+            
+            const dropdown = document.createElement('div');
+            dropdown.className = 'difficulty-dropdown';
+            dropdown.innerHTML = `
+                <h3>Select Difficulty</h3>
+                <button class="difficulty-option" onclick="generateNewPuzzle('easy')">
+                    Easy <span class="move-count">(3 moves)</span>
+                </button>
+                <button class="difficulty-option" onclick="generateNewPuzzle('medium')">
+                    Medium <span class="move-count">(5 moves)</span>
+                </button>
+                <button class="difficulty-option" onclick="generateNewPuzzle('hard')">
+                    Hard <span class="move-count">(7 moves)</span>
+                </button>
+                <button class="difficulty-option" onclick="generateNewPuzzle('expert')">
+                    Expert <span class="move-count">(9 moves)</span>
+                </button>
+                <button class="difficulty-option" onclick="generateNewPuzzle('insane')">
+                    Insane <span class="move-count">(11 moves)</span>
+                </button>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(dropdown);
+        }
+
+        function generateNewPuzzle(difficulty) {
+            // Remove dropdown and overlay - use specific IDs
+            const dropdown = document.querySelector('.difficulty-dropdown');
+            const overlay = document.getElementById('difficulty-overlay');
+            if (dropdown) dropdown.remove();
+            if (overlay) overlay.remove();
+            
+            // Always reset the cube to solved state before applying new puzzle
+            resetCube();
+            
+            // Reset puzzle state
+            resetPuzzleState();
+            
+            // Generate moves based on difficulty
+            let moveCount;
+            switch(difficulty) {
+                case 'easy': moveCount = 3; break;
+                case 'medium': moveCount = 5; break;
+                case 'hard': moveCount = 7; break;
+                case 'expert': moveCount = 9; break;
+                case 'insane': moveCount = 11; break;
+                default: moveCount = 3;
+            }
+            
+            // Generate puzzle moves
+            const puzzleMoves = generatePuzzleMoves(moveCount, difficulty);
+            
+            // Hide cube and execute puzzle moves
+            hideCube();
+            executePuzzleMoves(puzzleMoves, difficulty);
+        }
+
+        function generatePuzzleMoves(moveCount, difficulty) {
+            const movePool = ['U', "U'", 'D', "D'", 'L', "L'", 'R', "R'", 'F', "F'", 'B', "B'"];
+            const moves = [];
+            let previousMove = null;
+            
+            // Generate moves based on difficulty
+            for (let i = 0; i < moveCount; i++) {
+                let move;
+                do {
+                    const randomIndex = Math.floor(Math.random() * movePool.length);
+                    move = movePool[randomIndex];
+                } while (isUndoMove(previousMove, move)); // Avoid undo moves
+                
+                moves.push(move);
+                previousMove = move;
+            }
+            
+            return moves;
+        }
+
+        function executePuzzleMoves(moves, difficulty) {
+            if (isScrambling) return;
+            
+            // Initialize new puzzle statistics tracking
+            newPuzzleStartTime = Date.now();
+            newPuzzleAttempts++;
+            newPuzzleSolved = false;
+            newPuzzleActive = true;
+            newPuzzleDifficulty = difficulty; // Store the difficulty
+            
+            // Store the solved state for comparison
+            solvedState = new CubeState();
+            
+            // Clear move history and scramble queue
+            moveHistory = [];
+            scrambleQueue = [];
+            
+            // Convert moves to rotation commands
+            const moveToRotation = {
+                'U': { face: 'white', angle: Math.PI / 2, direction: 1 },
+                "U'": { face: 'white', angle: Math.PI / 2, direction: -1 },
+                'D': { face: 'yellow', angle: Math.PI / 2, direction: 1 },
+                "D'": { face: 'yellow', angle: Math.PI / 2, direction: -1 },
+                'L': { face: 'orange', angle: Math.PI / 2, direction: 1 },
+                "L'": { face: 'orange', angle: Math.PI / 2, direction: -1 },
+                'R': { face: 'red', angle: Math.PI / 2, direction: 1 },
+                "R'": { face: 'red', angle: Math.PI / 2, direction: -1 },
+                'F': { face: 'blue', angle: Math.PI / 2, direction: 1 },
+                "F'": { face: 'blue', angle: Math.PI / 2, direction: -1 },
+                'B': { face: 'green', angle: Math.PI / 2, direction: 1 },
+                "B'": { face: 'green', angle: Math.PI / 2, direction: -1 }
+            };
+            
+            // Add moves to scramble queue
+            moves.forEach(move => {
+                const rotation = moveToRotation[move];
+                if (rotation) {
+                    scrambleQueue.push(rotation);
+                }
+            });
+            
+            // Start the first move
+            if (scrambleQueue.length > 0) {
+                isScrambling = true;
+                const move = scrambleQueue.shift();
+                rotateLeft = move.direction || 1;
+                startRotation(move.face, move.angle);
+            }
+        }
+
+        function resetPuzzleState() {
+            // If new puzzle is already applied, reset the cube first
+            if (newPuzzleActive) {
+                resetCube();
+                newPuzzleActive = false;
+            }
+            
+            // Reset statistics
+            newPuzzleStartTime = 0;
+            newPuzzleSolved = false;
+            newPuzzleActive = false;
+        }
     </script>
 </body>
 </html> 

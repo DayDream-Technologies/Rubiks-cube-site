@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Rubik's Cube face with 9 squares -->
+  <!-- Top row -->
+  <rect x="8" y="8" width="5.33" height="5.33" fill="#ffffff" stroke="#000000" stroke-width="0.5"/>
+  <rect x="13.33" y="8" width="5.33" height="5.33" fill="#ff0000" stroke="#000000" stroke-width="0.5"/>
+  <rect x="18.67" y="8" width="5.33" height="5.33" fill="#0000ff" stroke="#000000" stroke-width="0.5"/>
+  
+  <!-- Middle row -->
+  <rect x="8" y="13.33" width="5.33" height="5.33" fill="#ffa500" stroke="#000000" stroke-width="0.5"/>
+  <rect x="13.33" y="13.33" width="5.33" height="5.33" fill="#00ff00" stroke="#000000" stroke-width="0.5"/>
+  <rect x="18.67" y="13.33" width="5.33" height="5.33" fill="#ffff00" stroke="#000000" stroke-width="0.5"/>
+  
+  <!-- Bottom row -->
+  <rect x="8" y="18.67" width="5.33" height="5.33" fill="#ffffff" stroke="#000000" stroke-width="0.5"/>
+  <rect x="13.33" y="18.67" width="5.33" height="5.33" fill="#ff0000" stroke="#000000" stroke-width="0.5"/>
+  <rect x="18.67" y="18.67" width="5.33" height="5.33" fill="#0000ff" stroke="#000000" stroke-width="0.5"/>
+</svg> 
